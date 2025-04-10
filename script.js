@@ -1,27 +1,29 @@
 let draggedElement = null;
 
 document.querySelectorAll(".image").forEach((div) => {
+  const img = div.querySelector("img");
+
   // Start dragging
-  div.addEventListener("dragstart", (e) => {
+  img.addEventListener("dragstart", (e) => {
     draggedElement = e.target;
   });
 
-  // Allow drop
+  // Allow drop on the container div
   div.addEventListener("dragover", (e) => {
     e.preventDefault();
   });
 
-  // Handle drop and swap background images
+  // Handle drop and swap image sources
   div.addEventListener("drop", (e) => {
     e.preventDefault();
 
-    if (draggedElement && draggedElement !== e.target) {
-      const draggedBg = window.getComputedStyle(draggedElement).backgroundImage;
-      const targetBg = window.getComputedStyle(e.target).backgroundImage;
+    const targetImg = div.querySelector("img");
 
-      // Swap background images
-      draggedElement.style.backgroundImage = targetBg;
-      e.target.style.backgroundImage = draggedBg;
+    if (draggedElement && draggedElement !== targetImg) {
+      // Swap the src attributes of dragged and target images
+      const tempSrc = draggedElement.src;
+      draggedElement.src = targetImg.src;
+      targetImg.src = tempSrc;
     }
   });
 });
